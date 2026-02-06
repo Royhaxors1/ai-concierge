@@ -1,7 +1,7 @@
 // Reminder System - Inngest Functions
 // Schedules and sends appointment reminders
 
-import { inngest } from '@/inngest/client';
+import { inngest, isInngestConfigured } from '@/inngest/client';
 import { prisma } from '@/lib/database';
 import { sendWhatsAppMessage } from '@/app/api/webhooks/whatsapp/route';
 import { format } from 'date-fns';
@@ -24,11 +24,11 @@ export async function scheduleReminders(appointmentId: string) {
 
   const { startTime, business, customer, service } = appointment;
 
-  // Schedule 24h reminder
+  // Schedule 24h reminder (via Inngest if configured)
   const reminder24h = new Date(startTime);
   reminder24h.setHours(reminder24h.getHours() - 24);
   
-  if (reminder24h > new Date()) {
+  if (reminder24h > new Date() && isInngestConfigured() && inngest) {
     await inngest.send({
       name: 'appointment/reminder.send',
       data: {
@@ -39,11 +39,11 @@ export async function scheduleReminders(appointmentId: string) {
     });
   }
 
-  // Schedule 1h reminder
+  // Schedule 1h reminder (via Inngest if configured)
   const reminder1h = new Date(startTime);
   reminder1h.setHours(reminder1h.getHours() - 1);
   
-  if (reminder1h > new Date()) {
+  if (reminder1h > new Date() && isInngestConfigured() && inngest) {
     await inngest.send({
       name: 'appointment/reminder.send',
       data: {
@@ -78,7 +78,7 @@ export async function scheduleReminders(appointmentId: string) {
 }
 
 // Reminder sending function
-export const sendReminder = inngest.createFunction(
+export const sendReminder = inngest?.createFunction?.(
   {
     id: 'send-appointment-reminder',
     name: 'Send Appointment Reminder',
