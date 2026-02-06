@@ -2,11 +2,10 @@
 import { Inngest } from 'inngest';
 import { sendReminder } from '@/inngest/functions/reminders';
 
-// Create Inngest client - works even without keys (will just not send)
+// Create Inngest client
+// Note: Inngest v3+ uses different constructor
 export const inngest = new Inngest({
   name: 'AI Concierge',
-  eventKey: process.env.INNGEST_EVENT_KEY || 'dummy-key',
-  signingKey: process.env.INNGEST_SIGNING_KEY || 'dummy-secret',
 });
 
 // Register functions
