@@ -15,24 +15,32 @@
 | [x] Calendar API | Goku | DONE | Google Calendar |
 | [x] Conversation flows | Ruby | DONE | Best-guess templates |
 | [x] E2E tests | Ruby | DONE | Test suite + verification |
+| [x] Landing page | Ruby | DONE | Demo-focused + stats |
+
+### 🚨 AGENTS - DUE 6 PM TODAY
+
+| Task | Owner | Status | Due |
+|------|-------|--------|-----|
+| [ ] Data models spec | Sasuke | ❌ PENDING | 6 PM |
+| [ ] Conversation flows | Sasuke | ❌ PENDING | 6 PM |
+| [ ] AI Persona | Sasuke | ❌ PENDING | 6 PM |
+| [ ] Pitch deck | Zoro | 🔴 URGENT | 6 PM |
+| [ ] One-pager | Zoro | ❌ PENDING | 6 PM |
+| [ ] Demo script | Zoro | ❌ PENDING | 6 PM |
+| [ ] Competitors | Shikamaru | ❌ PENDING | 6 PM |
+| [ ] Pricing | Shikamaru | ❌ PENDING | 6 PM |
+| [ ] Opportunity | Shikamaru | ❌ PENDING | 6 PM |
+| [ ] Test plan | Conan | ❌ PENDING | 6 PM |
+| [ ] Edge cases | Conan | ❌ PENDING | 6 PM |
+| [ ] Quality gates | Conan | ❌ PENDING | 6 PM |
 
 ### 🟡 Medium Priority
 
 | Task | Owner | Status |
 |------|-------|--------|
-| [ ] Agent deliverables | Sasuke/Zoro/Shikamaru/Conan | ❌ Pending |
-| [ ] Type-check script | Ruby | DONE |
-| [ ] CI/CD pipeline | Ruby | DONE |
-
-### 🟢 Low Priority
-
-| Task | Owner | Status |
-|------|-------|--------|
-| [ ] API specifications | Zoro | ❌ Pending |
-| [ ] Marketing messaging | Zoro | ❌ Pending |
-| [ ] Competitor research | Shikamaru | ❌ Pending |
-| [ ] Test plans | Conan | ❌ Pending |
-| [ ] Monitoring/analytics | Conan | ❌ Pending |
+| [ ] Demo video | Zoro | 🔜 Week 2 |
+| [ ] End-to-end test | Conan | 🔜 Week 2 |
+| [ ] Sales outreach | Ruby | 🔜 Week 2 |
 
 ---
 
