@@ -104,7 +104,7 @@ export const sendReminder = inngest?.createFunction?.(
     const now = new Date();
     const scheduled = new Date(scheduledFor);
     if (scheduled > now) {
-      await step.sleepUntil(scheduled);
+      await step.sleepUntil(scheduled, { timeout: '10m' });
     }
 
     // Fetch appointment details
