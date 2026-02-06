@@ -1,0 +1,162 @@
+// AI Concierge - Database Schema
+// Prisma schema for booking concierge with WhatsApp integration
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// BUSINESS - Service businesses using the concierge
+// ============================================
+model Business {
+  id                String   @id @default(cuid())
+  name              String
+  description       String?
+  whatsappNumber    String   // WhatsApp for business (incoming messages)
+  timezone          String   @default("Asia/Singapore")
+  operatingHours    Json?    // { "mon": ["09:00-18:00"], "tue": ... }
+  googleCalendarId  String?  // Connected Google Calendar ID
+  googleTokens      Json?    // Encrypted OAuth tokens
+  openClawWebhookUrl String? // Webhook for WhatsApp
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  services      Service[]
+  appointments  Appointment[]
+  customers     Customer[]
+  reminders     Reminder[]
+  conversations Conversation[]
+
+  @@map("businesses")
+}
+
+// ============================================
+// SERVICE - What the business offers
+// ============================================
+model Service {
+  id            String   @id @default(cuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name          String   // "Haircut", "Manicure", "Consultation"
+  description   String?
+  durationMin   Int      // Duration in minutes
+  price         Float?   // Price in SGD
+  bufferMin     Int      @default(0) // Buffer after appointment
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  appointments Appointment[]
+
+  @@index([businessId])
+  @@map("services")
+}
+
+// ============================================
+// CUSTOMER - People who book appointments
+// ============================================
+model Customer {
+  id            String   @id @default(cuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  phone         String   // WhatsApp phone number (normalized)
+  name          String?
+  notes         String?
+  totalBookings Int      @default(0)
+  lastContactedAt DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  appointments  Appointment[]
+  conversations Conversation[]
+
+  @@unique([businessId, phone])
+  @@index([businessId])
+  @@map("customers")
+}
+
+// ============================================
+// APPOINTMENT - Booked slots
+// ============================================
+model Appointment {
+  id            String   @id @default(cuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customerId    String?
+  customer      Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  serviceId     String
+  service       Service   @relation(fields: [serviceId], references: [id])
+  
+  customerName  String   // Snapshot at booking time
+  customerPhone String   // Snapshot at booking time
+  
+  startTime     DateTime
+  endTime       DateTime
+  status        String   @default("pending") // pending, confirmed, cancelled, completed, no_show
+  
+  notes         String?
+  pricePaid     Float?   // Price at booking time
+  
+  source        String   @default("whatsapp") // whatsapp, website, phone
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  reminders     Reminder[]
+
+  @@index([businessId])
+  @@index([customerId])
+  @@index([startTime])
+  @@map("appointments")
+}
+
+// ============================================
+// REMINDER - Scheduled reminders
+// ============================================
+model Reminder {
+  id            String   @id @default(cuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  appointmentId String
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  
+  type          String   // "24h", "1h", "custom"
+  scheduledAt   DateTime
+  sentAt        DateTime?
+  status        String   @default("pending") // pending, sent, failed
+  
+  message       String?  // Custom message template
+  createdAt     DateTime @default(now())
+
+  @@index([businessId])
+  @@index([status])
+  @@map("reminders")
+}
+
+// ============================================
+// CONVERSATION - Chat history for context
+// ============================================
+model Conversation {
+  id            String   @id @default(cuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customerId    String?
+  customer      Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  
+  phone         String   // Customer phone (for routing)
+  sessionId     String   // WhatsApp session/chat ID
+  
+  messages      Json     // Array of { role, content, timestamp }
+  intent        String?  // Detected intent: booking, inquiry, cancellation
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([businessId])
+  @@index([sessionId])
+  @@map("conversations")
+}
