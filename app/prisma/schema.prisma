@@ -148,7 +148,7 @@ model Conversation {
   customer      Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
   
   phone         String   // Customer phone (for routing)
-  sessionId     String   // WhatsApp session/chat ID
+  sessionId     String   // WhatsApp session/chat ID (unique per business)
   
   messages      Json     // Array of { role, content, timestamp }
   intent        String?  // Detected intent: booking, inquiry, cancellation
@@ -157,6 +157,7 @@ model Conversation {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  @@unique([businessId, sessionId])
   @@index([businessId])
   @@index([sessionId])
   @@map("conversations")

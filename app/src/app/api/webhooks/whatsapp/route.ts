@@ -206,7 +206,12 @@ async function handleBookingIntent(
       ).join('\n');
 
       await prisma.conversation.upsert({
-        where: { id: conversation?.id || 'new' },
+        where: {
+          businessId_sessionId: {
+            businessId,
+            sessionId: customer.phone,
+          },
+        },
         update: {
           intent: 'book_pending',
           bookingState: {
@@ -256,8 +261,14 @@ async function handleBookingIntent(
       `${i + 1}. ${s.day} ${s.date} at ${s.time}`
     ).join('\n');
 
+    // Upsert by composite unique key (businessId + sessionId)
     await prisma.conversation.upsert({
-      where: { sessionId: customer?.phone || 'new' },
+      where: {
+        businessId_sessionId: {
+          businessId,
+          sessionId: customer?.phone,
+        },
+      },
       update: {
         intent: 'book_pending',
         bookingState: { step: 'time', serviceId: service.id, serviceName: service.name },
