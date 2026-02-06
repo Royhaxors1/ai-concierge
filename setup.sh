@@ -76,7 +76,7 @@ fi
 
 echo -e "${GREEN}[4/5]${NC} Setting up database..."
 if [ -f ".env.local" ]; then
-    cd simplebiz
+    cd app
     npx prisma generate
     npx prisma db push
     cd ..
@@ -89,7 +89,7 @@ echo -e "${GREEN}🚀 Project set up successfully!${NC}"
 echo "========================================"
 echo ""
 echo "To start the development server:"
-echo "  cd ai-concierge/simplebiz"
+echo "  cd ai-concierge/app"
 echo "  npm run dev"
 echo ""
 echo "Then open: http://localhost:3000"
