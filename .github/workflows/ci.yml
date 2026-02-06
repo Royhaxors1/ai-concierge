@@ -1,0 +1,77 @@
+# AI Concierge - CI/CD Pipeline
+name: CI/CD
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  NODE_VERSION: '20'
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: simplebiz/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: ./simplebiz
+        run: npm ci
+
+      - name: Type Check
+        working-directory: ./simplebiz
+        run: npx tsc --noEmit
+
+      - name: Lint
+        working-directory: ./simplebiz
+        run: npm run lint
+
+      - name: Run Tests
+        working-directory: ./simplebiz
+        run: npm run test:run
+
+  deploy:
+    name: Deploy to Vercel
+    needs: test
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Deploy to Vercel
+        working-directory: ./simplebiz
+        run: |
+          vercel --token=${{ secrets.VERCEL_TOKEN }} \
+            --scope=${{ secrets.VERCEL_ORG }} \
+            --prod
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  notify:
+    name: Notify on Failure
+    needs: [test, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Notification
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"🚨 AI Concierge CI/CD Failed!"}' \
+            ${{ secrets.SLACK_WEBHOOK_URL }}

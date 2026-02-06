@@ -22,7 +22,7 @@
 | [ ] Natural language parser | Sasuke/Goku |
 | [ ] Business onboarding flow | Sasuke |
 | [ ] Q&A intent classifier | Goku |
-| [ ] CI/CD pipeline | Conan |
+| [x] CI/CD pipeline | Ruby/Conan | DONE |
 
 ### 🟢 Low Priority
 
