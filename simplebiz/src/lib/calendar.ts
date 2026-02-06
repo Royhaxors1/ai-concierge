@@ -13,7 +13,7 @@ export interface CalendarEvent {
   status: 'confirmed' | 'tentative' | 'cancelled';
 }
 
-export interface TimeSlot {
+export interface CalendarSlot {
   start: Date;
   end: Date;
   available: boolean;
@@ -87,8 +87,8 @@ export function calculateAvailableSlots(
   workHours: { start: number; end: number }, // e.g., { start: 9, end: 18 }
   slotDuration: number, // in minutes
   date: Date
-): TimeSlot[] {
-  const slots: TimeSlot[] = [];
+): CalendarSlot[] {
+  const slots: CalendarSlot[] = [];
   const dateStart = startOfDay(date);
   
   // Generate all possible slots for the day
