@@ -362,7 +362,7 @@ async function confirmBooking(
         where: { id: conversation.id },
         data: {
           intent: 'book_complete',
-          bookingState: null,
+          bookingState: undefined,
         },
       });
     }
