@@ -100,7 +100,7 @@ async function processIncomingMessage(
   });
 
   const history: LLMMessage[] = conversation?.messages 
-    ? (conversation.messages as LLMMessage[])
+    ? ((conversation.messages || []) as unknown as LLMMessage[])
     : [];
 
   // Get booking state if in progress
