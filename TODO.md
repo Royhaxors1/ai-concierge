@@ -34,6 +34,15 @@
 | [ ] Edge cases | Conan | ❌ PENDING | 6 PM |
 | [ ] Quality gates | Conan | ❌ PENDING | 6 PM |
 
+### 🔵 VERCEL DEPLOYMENT
+
+| Task | Status | Notes |
+|------|--------|-------|
+| [x] Project config | DONE | vercel.json |
+| [x] CI/CD pipeline | DONE | Auto-deploy on push |
+| [x] Deployment guide | DONE | DEPLOY.md |
+| [ ] Connect GitHub | 🔜 Roy | Vercel dashboard |
+
 ### 🟡 Medium Priority
 
 | Task | Owner | Status |
