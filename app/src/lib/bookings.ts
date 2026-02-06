@@ -92,11 +92,11 @@ export async function getAvailableSlots(request: SlotRequest): Promise<TimeSlot[
     // Parse each time slot for this day
     for (const timeRange of dayHours) {
       const [startTime, endTime] = timeRange.split('-');
-      const slotStart = parseTime(currentDate, startTime);
+      let slotStart = parseTime(currentDate, startTime);
       
       // Generate slots for this time range
       while (isBefore(addMinutes(slotStart, duration), parseTime(currentDate, endTime))) {
-        const slotEnd = addMinutes(slotStart, duration);
+        let slotEnd = addMinutes(slotStart, duration);
         
         // Check if slot conflicts with calendar events
         const hasConflict = calendarEvents.some(event => 

@@ -14,5 +14,5 @@ export const functions = [
   sendReminder,
 ];
 
-// Inngest endpoint for Next.js
-export { onRequest } from 'inngest(nextjs)';
+// Inngest handler for Next.js App Router
+export { serve } from 'inngest/next';
