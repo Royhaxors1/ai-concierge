@@ -1,6 +1,6 @@
 // Inngest Client Configuration
 // Only initialize if environment variables are present
-import { Inngest } from 'inngest';
+import { Inngest, type InngestFunction } from 'inngest';
 import { sendReminder } from '@/inngest/functions/reminders';
 
 // Create Inngest client only if keys are present
@@ -14,10 +14,9 @@ export const inngest = hasInngestKeys
     })
   : null;
 
-// Register functions
-export const functions = hasInngestKeys
-  ? [sendReminder]
-  : [];
+// Register functions - type assertion for empty array
+type InngestFunctions = InngestFunction<any, any, any>[];
+export const functions = (hasInngestKeys ? [sendReminder] : []) as InngestFunctions;
 
 // Inngest handler for Next.js App Router
 export const serve = hasInngestKeys
