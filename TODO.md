@@ -106,10 +106,10 @@
 ```
 ai-concierge/
 ├── .github/workflows/ci.yml     ← CI/CD
-├── simplebiz/
+├── app/
 │   ├── src/
 │   │   ├── lib/               ← Core libraries
-│   │   ├── app/api/           ← API routes
+│   │   ├── api/               ← API routes
 │   │   ├── inngest/           ← Reminders
 │   │   └── __tests__/         ← E2E tests
 │   ├── e2e-test.sh            ← Test script
