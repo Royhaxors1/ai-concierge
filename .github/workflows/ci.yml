@@ -23,22 +23,22 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: simplebiz/package-lock.json
+          cache-dependency-path: app/package-lock.json
 
       - name: Install Dependencies
-        working-directory: ./simplebiz
+        working-directory: ./app
         run: npm ci
 
       - name: Type Check
-        working-directory: ./simplebiz
+        working-directory: ./app
         run: npx tsc --noEmit
 
       - name: Lint
-        working-directory: ./simplebiz
+        working-directory: ./app
         run: npm run lint
 
       - name: Run Tests
-        working-directory: ./simplebiz
+        working-directory: ./app
         run: npm run test:run
 
   deploy:
@@ -55,7 +55,7 @@ jobs:
         run: npm i -g vercel@latest
 
       - name: Deploy to Vercel
-        working-directory: ./simplebiz
+        working-directory: ./app
         run: |
           vercel --token=${{ secrets.VERCEL_TOKEN }} \
             --scope=${{ secrets.VERCEL_ORG }} \

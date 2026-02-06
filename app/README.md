@@ -190,10 +190,40 @@ Each AI Concierge client receives:
 
 ## 📚 Resources
 
+- **Live Demo:** https://ai-concierge.vercel.app (Coming Soon)
 - **Demo Video:** Coming Week 2
 - **Pitch Deck:** Coming Week 2
 - **Documentation:** In progress
 - **API Reference:** `/api/docs`
+
+---
+
+## 🚀 Deploy to Vercel
+
+### Option 1: One-Click Deploy
+
+1. Go to [Vercel](https://vercel.com)
+2. Import your GitHub repository: `Royhaxors1/ai-concierge`
+3. Set root directory to: `app`
+4. Add environment variables from `.env.example`
+5. Deploy!
+
+### Option 2: CLI Deploy
+
+```bash
+# Login to Vercel
+npx vercel login
+
+# Deploy
+cd ai-concierge
+npx vercel --prod
+```
+
+### Option 3: Script
+
+```bash
+bash deploy-vercel.sh
+```
 
 ---
 
