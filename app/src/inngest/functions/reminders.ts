@@ -63,6 +63,9 @@ export async function scheduleReminders(appointmentId: string) {
   }
 
   // Create reminder records in database
+  const customerName = customer?.name || 'there';
+  const serviceName = service?.name || 'appointment';
+  
   await prisma.reminder.createMany({
     data: [
       {
@@ -71,7 +74,7 @@ export async function scheduleReminders(appointmentId: string) {
         type: '24h',
         scheduledAt: reminder24h,
         status: 'pending',
-        message: `Hi ${customer.name || 'there'}! Reminder: Your ${service.name} is tomorrow at ${format(startTime, 'h:mm a')}. See you then!`,
+        message: `Hi ${customerName}! Reminder: Your ${serviceName} is tomorrow at ${format(startTime, 'h:mm a')}. See you then!`,
       },
       {
         businessId: business.id,
@@ -79,7 +82,7 @@ export async function scheduleReminders(appointmentId: string) {
         type: '1h',
         scheduledAt: reminder1h,
         status: 'pending',
-        message: `See you in 1 hour! 📍 Your ${service.name} is at ${format(startTime, 'h:mm a')}.`,
+        message: `See you in 1 hour! 📍 Your ${serviceName} is at ${format(startTime, 'h:mm a')}.`,
       },
     ],
   });
