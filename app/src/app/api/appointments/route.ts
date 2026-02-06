@@ -141,7 +141,7 @@ export async function GET_slots(request: NextRequest) {
 
     const slots = await getAvailableSlots({
       businessId,
-      serviceId,
+      serviceId: serviceId || undefined,
       startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined,
       duration,
