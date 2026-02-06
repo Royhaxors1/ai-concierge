@@ -11,8 +11,8 @@
 | [x] Minimax-M2.1 integration | Goku | DONE | Intent + response generation |
 | [x] WhatsApp webhook handler | Goku | DONE | OpenClaw integration |
 | [x] Reminder system (Inngest) | Goku | DONE | 24h + 1h reminders |
+| [x] Conversation flows | Ruby | DONE | Best-guess templates |
 | [ ] Calendar integration | Goku | IN PROGRESS | Google Calendar API |
-| [ ] Conversation flows | Sasuke | NEXT | TBD |
 | [ ] Booking slot logic | Goku | NEXT | TBD |
 
 ### 🟡 Medium Priority
@@ -60,16 +60,19 @@
 
 ## ✅ Completed This Week
 
-| Task | Owner | Date |
-|------|-------|------|
-| [x] Project structure | Ruby | 2026-02-06 |
-| [x] Agent squad assigned | Ruby | 2026-02-06 |
-| [x] Tech stack confirmed | Ruby | 2026-02-06 |
-| [x] Prisma schema (6 models) | Sasuke/Goku | 2026-02-06 |
-| [x] Project scaffold | Goku | 2026-02-06 |
-| [x] LLM integration | Goku | 2026-02-06 |
-| [x] WhatsApp webhook | Goku | 2026-02-06 |
-| [x] Reminder system | Goku | 2026-02-06 |
+| Task | Owner | Date | Commit |
+|------|-------|------|--------|
+| [x] Project structure | Ruby | 2026-02-06 | - |
+| [x] Agent squad assigned | Ruby | 2026-02-06 | - |
+| [x] Tech stack confirmed | Ruby | 2026-02-06 | - |
+| [x] Prisma schema (6 models) | Sasuke/Goku | 2026-02-06 | 1502c33 |
+| [x] LLM integration | Goku | 2026-02-06 | 1502c33 |
+| [x] WhatsApp webhook | Goku | 2026-02-06 | 1502c33 |
+| [x] Reminder system | Goku | 2026-02-06 | 1502c33 |
+| [x] GitHub repo created | Ruby | 2026-02-06 | - |
+| [x] Conversation flows | Ruby | 2026-02-06 | a4106b0 |
+| [x] CI/CD pipeline | Ruby | 2026-02-06 | a4106b0 |
+| [x] Setup scripts | Ruby | 2026-02-06 | a4106b0 |
 
 ---
 
@@ -77,6 +80,9 @@
 
 ```
 ai-concierge/
+├── .github/
+│   └── workflows/
+│       └── ci.yml              ← CI/CD pipeline ✅
 ├── simplebiz/                    ← MVP codebase
 │   ├── src/
 │   │   ├── app/
@@ -89,7 +95,7 @@ ai-concierge/
 │   │   ├── lib/
 │   │   │   ├── database.ts      ← Prisma client
 │   │   │   ├── llm.ts           ← Minimax-M2.1
-│   │   │   ├── calendar.ts      ← Google Calendar
+│   │   │   ├── calendar.ts       ← Google Calendar
 │   │   │   └── utils.ts
 │   │   ├── prisma/schema.prisma ← 6 models
 │   │   └── inngest/
@@ -101,8 +107,24 @@ ai-concierge/
 │   └── .env.example
 ├── agents/                      ← Agent workspace
 │   └── [agent-name]/
-└── COORDINATION.md
+├── scripts/
+│   ├── setup.sh                 ← Quick setup ✅
+│   ├── checkpoint.sh            ← Backup script ✅
+│   └── auto_backup.sh           ← Auto backup ✅
+├── COORDINATION.md
+├── TODO.md
+└── README.md
 ```
+
+---
+
+## 🔗 GitHub
+
+| Item | Value |
+|------|-------|
+| **Repo** | https://github.com/Royhaxors1/ai-concierge |
+| **Branch** | master |
+| **Latest Commit** | a4106b0 - feat: CI/CD pipeline + setup scripts |
 
 ---
 
