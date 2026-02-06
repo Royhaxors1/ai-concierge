@@ -29,14 +29,18 @@ export async function scheduleReminders(appointmentId: string) {
   reminder24h.setHours(reminder24h.getHours() - 24);
   
   if (reminder24h > new Date() && isInngestConfigured() && inngest) {
-    await inngest.send({
-      name: 'appointment/reminder.send',
-      data: {
-        appointmentId,
-        type: '24h',
-        scheduledFor: reminder24h.toISOString(),
-      },
-    });
+    try {
+      await inngest.send({
+        name: 'appointment/reminder.send',
+        data: {
+          appointmentId,
+          type: '24h',
+          scheduledFor: reminder24h.toISOString(),
+        },
+      });
+    } catch (e) {
+      console.warn('Inngest send failed (expected if not configured):', e);
+    }
   }
 
   // Schedule 1h reminder (via Inngest if configured)
@@ -44,14 +48,18 @@ export async function scheduleReminders(appointmentId: string) {
   reminder1h.setHours(reminder1h.getHours() - 1);
   
   if (reminder1h > new Date() && isInngestConfigured() && inngest) {
-    await inngest.send({
-      name: 'appointment/reminder.send',
-      data: {
-        appointmentId,
-        type: '1h',
-        scheduledFor: reminder1h.toISOString(),
-      },
-    });
+    try {
+      await inngest.send({
+        name: 'appointment/reminder.send',
+        data: {
+          appointmentId,
+          type: '1h',
+          scheduledFor: reminder1h.toISOString(),
+        },
+      });
+    } catch (e) {
+      console.warn('Inngest send failed (expected if not configured):', e);
+    }
   }
 
   // Create reminder records in database

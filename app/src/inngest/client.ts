@@ -1,27 +1,20 @@
 // Inngest Client Configuration
-// Only initialize if environment variables are present
-import { Inngest, type InngestFunction } from 'inngest';
+import { Inngest } from 'inngest';
 import { sendReminder } from '@/inngest/functions/reminders';
 
-// Create Inngest client only if keys are present
-const hasInngestKeys = process.env.INNGEST_EVENT_KEY && process.env.INNGEST_SIGNING_KEY;
+// Create Inngest client - works even without keys (will just not send)
+export const inngest = new Inngest({
+  name: 'AI Concierge',
+  eventKey: process.env.INNGEST_EVENT_KEY || 'dummy-key',
+  signingKey: process.env.INNGEST_SIGNING_KEY || 'dummy-secret',
+});
 
-export const inngest = hasInngestKeys
-  ? new Inngest({
-      name: 'AI Concierge',
-      eventKey: process.env.INNGEST_EVENT_KEY!,
-      signingKey: process.env.INNGEST_SIGNING_KEY!,
-    })
-  : null;
-
-// Register functions - type assertion for empty array
-type InngestFunctions = InngestFunction<any, any, any>[];
-export const functions = (hasInngestKeys ? [sendReminder] : []) as InngestFunctions;
+// Register functions
+export const functions = [sendReminder];
 
 // Inngest handler for Next.js App Router
-export const serve = hasInngestKeys
-  ? (await import('inngest/next')).serve
-  : null;
+export const serve = (await import('inngest/next')).serve;
 
 // Helper to check if Inngest is configured
-export const isInngestConfigured = () => hasInngestKeys;
+export const isInngestConfigured = () => 
+  !!process.env.INNGEST_EVENT_KEY && !!process.env.INNGEST_SIGNING_KEY;
